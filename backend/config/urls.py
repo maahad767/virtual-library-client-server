@@ -19,10 +19,12 @@ from django.urls import path
 from ninja import NinjaAPI
 from account.middlewares import JWTAuth
 from account.api import router as account_api
+from product.api import router as product_api
 
 
 api = NinjaAPI(auth=JWTAuth())
 api.add_router("account/", account_api, tags=["account"])
+api.add_router("product/", product_api, tags=["product"])
 
 urlpatterns = [
     path("admin/", admin.site.urls),

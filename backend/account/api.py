@@ -3,7 +3,7 @@ from ninja import Router
 from ninja.errors import HttpError
 
 from account.models import User
-from account.schema import AuthIn, AuthRefreshIn, AuthOut, RegisterIn, UserOut
+from account.schemas import AuthIn, AuthRefreshIn, AuthOut, RegisterIn, UserOut
 from account.utils import create_access_token, create_refresh_token, decode_token
 from common.schema import GenericResponse
 
