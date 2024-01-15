@@ -22,8 +22,7 @@ from account.api import router as account_api
 
 
 api = NinjaAPI(auth=JWTAuth())
-api.add_router("account/", account_api)
-
+api.add_router("account/", account_api, tags=["account"])
 
 urlpatterns = [
     path("admin/", admin.site.urls),

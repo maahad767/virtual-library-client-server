@@ -3,7 +3,7 @@ from ninja import Router
 from ninja.errors import HttpError
 
 from account.models import User
-from account.schema import AuthIn, AuthRefreshIn, AuthOut, RegisterIn
+from account.schema import AuthIn, AuthRefreshIn, AuthOut, RegisterIn, UserOut
 from account.utils import create_access_token, create_refresh_token, decode_token
 from common.schema import GenericResponse
 
@@ -36,6 +36,7 @@ def refresh_token(request, refresh_in: AuthRefreshIn):
 
 @router.post("/register/", response=GenericResponse, auth=None)
 def register_user(request, user_in: RegisterIn):
+    user_in.validate_username()
     user_in.validate_password()
 
     if User.objects.filter(username=user_in.username).exists():
@@ -46,3 +47,8 @@ def register_user(request, user_in: RegisterIn):
 
     User.objects.create_user(username=user_in.username, email=user_in.email, password=user_in.password1, first_name=user_in.first_name, last_name=user_in.last_name)
     return {"message": "Registration successful"}
+
+
+@router.get("/me/", response=UserOut)
+def get_me(request):
+    return request.auth
