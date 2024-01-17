@@ -1,9 +1,10 @@
 import { Button, Form, Input, message } from "antd";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/AuthHooks";
+import { AccountService } from "../../services/AccountService";
 
 const Login = () => {
-  const { login, isAuthenticated } = useAuth;
+  const { login, isAuthenticated } = useAuth();
   const location = useLocation();
 
   if (isAuthenticated) {
@@ -13,16 +14,25 @@ const Login = () => {
   const onFinish = async (values) => {
     console.log("Success:", values);
 
-    // try {
-    //   const resp = await AuthService.login(values.username, values.password);
-    //   message.success(resp.message);
-    //   login(resp.data.access_token, resp.data.user_data);
-    // } catch (error) {
-    //   console.error("An error occurred: ", error.message);
-    //   message.error({
-    //     content: error.message,
-    //   });
-    // }
+    try {
+      const resp = await AccountService.getToken(
+        values.username,
+        values.password
+      );
+      message.success("Login Successful");
+      console.log(
+        "access, refresh, user: ",
+        resp.data.access_token,
+        resp.data.refresh_token,
+        resp.data.user
+      );
+      login(resp.data.access_token, resp.data.refresh_token, resp.data.user);
+    } catch (error) {
+      console.error("An error occurred: ", error.message);
+      message.error({
+        content: error.message,
+      });
+    }
   };
 
   const onFinishFailed = (errorInfo) => {

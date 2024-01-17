@@ -8,4 +8,8 @@ const getToken = (username, password) => {
   });
 };
 
-export const { AccountService } = { getToken };
+const getMyProfile = () => {
+  return BaseService.get(`${ENDPOINTS.ACCOUNT}/me`);
+};
+
+export const AccountService = { getToken, getMyProfile };
