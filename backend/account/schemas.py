@@ -8,20 +8,6 @@ import re
 from account.models import User
 
 
-class AuthIn(Schema):
-    username: str
-    password: str
-
-
-class AuthRefreshIn(Schema):
-    refresh: str
-
-
-class AuthOut(Schema):
-    access_token: str
-    refresh_token: str
-
-
 class RegisterIn(ModelSchema):
     email: EmailStr
     username: str = Field(..., min_length=3, max_length=150)
@@ -49,3 +35,18 @@ class UserOut(ModelSchema):
     class Config:
         model = User
         model_fields = ["id", "username", "first_name", "last_name", "email"]
+
+
+class AuthIn(Schema):
+    username: str
+    password: str
+
+
+class AuthRefreshIn(Schema):
+    refresh: str
+
+
+class AuthOut(Schema):
+    access_token: str
+    refresh_token: str
+    user: UserOut
